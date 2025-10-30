@@ -1,0 +1,4 @@
+# Product Images Folder
+
+This folder is for local product image assets.
+Product images uploaded through the admin dashboard are stored in Supabase Storage.
