@@ -199,7 +199,10 @@ export default function CheckoutPage() {
         .select()
         .single();
 
-      if (orderError) throw orderError;
+      if (orderError) {
+        console.error('Order creation error:', orderError);
+        throw new Error(`Erreur création commande: ${orderError.message}`);
+      }
 
       // Create order items
       const orderItems = cartItems.map(item => ({
@@ -216,7 +219,10 @@ export default function CheckoutPage() {
         .from('order_items')
         .insert(orderItems);
 
-      if (itemsError) throw itemsError;
+      if (itemsError) {
+        console.error('Order items error:', itemsError);
+        throw new Error(`Erreur ajout articles: ${itemsError.message}`);
+      }
 
       // Clear cart
       localStorage.removeItem('cart');
@@ -228,9 +234,10 @@ export default function CheckoutPage() {
       // Redirect to confirmation page
       router.push(`/order-confirmation?orderNumber=${order.order_number}`);
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting order:', error);
-      toast.error('Erreur lors de la commande. Veuillez réessayer.');
+      const errorMessage = error?.message || 'Erreur inconnue';
+      toast.error(`Erreur: ${errorMessage}`);
     } finally {
       setSubmitting(false);
     }
