@@ -159,7 +159,14 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    await processOrder();
+  };
 
+  const handleButtonClick = async () => {
+    await processOrder();
+  };
+
+  const processOrder = async () => {
     if (!validateForm()) {
       toast.error('Veuillez remplir tous les champs requis');
       return;
@@ -560,7 +567,7 @@ export default function CheckoutPage() {
               {/* Submit Button - Desktop */}
               <button
                 type="button"
-                onClick={handleSubmit}
+                onClick={handleButtonClick}
                 className="btn elegant-button w-100 d-none d-lg-block mb-2"
                 style={{ fontSize: '1.1rem', padding: '1rem 1.5rem' }}
                 disabled={submitting}
